@@ -97,6 +97,7 @@ AC_PROG_AWK
 AC_PROG_RANLIB
 
 AC_LANG([C++])
+AX_CXX_COMPILE_STDCXX_11([noext])
 
 AX_THRIFT_LIB(cpp, [C++], yes)
 have_cpp=no
@@ -194,9 +195,13 @@ if test "$with_perl" = "yes"; then
   if test -n "$PERL" ; then
     AC_PROG_PERL_MODULES([Bit::Vector], success="yes", success="no")
     have_perl_bit_vector="$success"
+    AC_PROG_PERL_MODULES([Class::Accessor], success="yes", success="no")
+    have_perl_class_accessor="$success"
   fi
   if test -n "$PERL" -a "$have_perl_bit_vector" = "yes" ; then
-    have_perl="yes"
+    if test -n "$PERL" -a "$have_perl_class_accessor" = "yes" ; then
+      have_perl="yes"
+    fi
   fi
 fi
 AM_CONDITIONAL(WITH_PERL, [test "$have_perl" = "yes"])
